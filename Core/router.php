@@ -27,17 +27,20 @@ class Router{
         $this->add("PATCH", $uri, $controller);
     }
     public function put($uri, $controller){
-        $this->add("PUT", $uri, $controller);
+        $this->add("POST", $uri, $controller);
     }
 
     public function route($uri, $method){
+        
         //loop through our routes array
         foreach( $this->routes as $route){
+        
             //if the uri AND method of the array match what we received
-            if( $route['uri'] == $uri && $route['method'] == strtoupper($method))
+            if( $route['uri'] == $uri && $route['method'] == strtoupper($method)){                
                 return require base_path($route['controller']);
+            }
         }//end for
-
+        
         //never found a match.  Abort
         $this -> abort();
 

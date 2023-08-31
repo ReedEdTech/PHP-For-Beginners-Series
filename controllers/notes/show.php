@@ -7,39 +7,16 @@ $db = new Database($config['database']);
 
 $currentUserId = 1;
 
-//If you are loading this page because they have pressed the form's button
-if( $_SERVER['REQUEST_METHOD'] == 'POST' ){
-    //form was submitted.  Delete current note
 
-    //make sure they have the rights to delete this note
-    $note = $db->query('select * from notes where id = :id', [
-        'id' => $_GET['id']
-    ])->findOrFail();
-
-    authorize($note['user_id'] === $currentUserId);
-
-    //survived the authorzie check
-    //delete it from the db (grabbing id from hidden field)
-    $db->query( 'delete from notes where id=:id',[
-        'id'=>$_POST['id']
-    ]);
-
-    //take them to the page with all notes
-    header('location: /notes');
-    exit();
-
-}
-else{// just show the note
     
 
-    $note = $db->query('select * from notes where id = :id', [
-        'id' => $_GET['id']
-    ])->findOrFail();
+$note = $db->query('select * from notes where id = :id', [
+    'id' => $_GET['id']
+])->findOrFail();
 
-    authorize($note['user_id'] === $currentUserId);
+authorize($note['user_id'] === $currentUserId);
 
-    view("notes/show.view.php", [
-        'heading' => 'Note',
-        'note' => $note
-    ]);
-}
+view("notes/show.view.php", [
+    'heading' => 'Note',
+    'note' => $note
+]);
