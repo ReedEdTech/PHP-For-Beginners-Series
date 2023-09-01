@@ -1,5 +1,7 @@
 <?php
 
+session_start(); //call this early to create the sessioN!
+
 const BASE_PATH = __DIR__.'/../';
 
 require BASE_PATH.'Core/functions.php';
