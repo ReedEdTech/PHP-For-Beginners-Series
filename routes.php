@@ -19,6 +19,9 @@ $router->get("/contact", "controllers/contact.php");
 $router->delete("/note", "controllers/notes/destroy.php");
 $router->get("/notes", "controllers/notes/index.php");
 $router->get("/note", "controllers/notes/show.php");
+$router->patch("/notes", "controllers/notes/update.php");
+
+$router->get('/note/edit', 'controllers/notes/edit.php');
 
 //view the creation interface
 $router->get("/notes/create", 'controllers/notes/create.php'); 
