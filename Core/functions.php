@@ -40,3 +40,24 @@ function view($path, $attributes = [])
 
     require base_path('views/' . $path);
 }
+
+function login( $user ){ //$user is an ARRAY 
+    $_SESSION[ 'user' ] = [
+        'email' => $user['email']
+    ];
+
+    //something about refreshing their cookie?
+    session_regenerate_id(true);
+}
+
+function logout(){
+    //log the user out
+    $_SESSION = [];  //clear out all session data
+
+    session_destroy(); //delete the session data stored on server
+
+    //clear the cookie
+    $params = session_get_cookie_params(); //parameters for the cookie
+    //name=PHPSESSID, val? , exp time = 1 hour ago
+    setcookie('PHPSESSID', '', time()-3600, $params['path'], $params['domain']);
+}
