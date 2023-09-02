@@ -40,7 +40,7 @@ else{
 //no?  save acct to db, log them in, & redirect
     $db->query('INSERT INTO users(email, password) VALUES (:email, :password)', [
         'email'=>$email,
-        'password'=>$password
+        'password'=>password_hash( $password, PASSWORD_BCRYPT )
     ]);
 
     //remember that the user has logged in
