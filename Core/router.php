@@ -5,6 +5,7 @@ namespace Core;
 use Core\Middleware\Auth;
 use Core\Middleware\Guest;
 use Core\Middleware\Middleware;
+use Http\controllers;
 
 class Router{
     protected $routes = [];
@@ -59,7 +60,7 @@ class Router{
                 }
 
                 //still here?  actually load your page
-                return require base_path($route['controller']);
+                return require base_path('Http/controllers/' . $route['controller']);
             }
         }//end for
         
