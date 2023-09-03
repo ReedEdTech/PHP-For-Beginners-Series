@@ -1,5 +1,7 @@
 <?php
 
+use Core\Session; 
+
 session_start(); //call this early to create the sessioN!
 
 const BASE_PATH = __DIR__.'/../';
@@ -27,8 +29,8 @@ $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 
 $router->route($uri, $method);
-//routeToController($uri, $routes);
 
-//require base_path('Core/router.php');
+//NOW we can expired the '_flashed' session data
+Session::unflash();
 
 

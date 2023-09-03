@@ -3,6 +3,7 @@
 namespace Core;
 
 use Core\Database;
+use Core\Session;
 
 class Authenticator{
 
@@ -38,14 +39,7 @@ class Authenticator{
     
     public function logout(){
         //log the user out
-        $_SESSION = [];  //clear out all session data
-    
-        session_destroy(); //delete the session data stored on server
-    
-        //clear the cookie
-        $params = session_get_cookie_params(); //parameters for the cookie
-        //name=PHPSESSID, val? , exp time = 1 hour ago
-        setcookie('PHPSESSID', '', time()-3600, $params['path'], $params['domain']);
+        Session::destroy();
     }
 
 }

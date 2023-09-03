@@ -2,6 +2,7 @@
 
 use Http\Forms\LoginForm;
 use Core\Authenticator;
+use Core\Session;
 
 
 $email = $_POST['email'];
@@ -26,11 +27,19 @@ if( $form->validate( $email, $password ) ){
     }
 }
 
+//trick:  use a _flashed key to indicate that it needs to get cleared on next page load
+//$_SESSION['_flashed']['errors'] = $form->errors();
+Session::flash( 'errors', $form->errors() );
+
+return redirect('/login'); //this sends us to the session/create controller
+
+/*
+//THis is not a good way to handle things.  We need to redirect!  Not just reload
 //no user OR wrong password:  reload the view with errors
 return view('session/create.view.php', [
     'errors' => $form->errors()
 ]);
-
+*/
 
 
 
