@@ -2,43 +2,35 @@
 
 use Http\Forms\LoginForm;
 use Core\Authenticator;
-use Core\Session;
 
 
-$email = $_POST['email'];
-$password = $_POST['password'];
+//check to see if inputs are valid email format & password length
 
+//weird:  this staic function returns a Form instance variable.  Store it for later
+$form = LoginForm::validate( $attributes = [
+    'email' => $_POST['email'],
+    'password' => $_POST['password']
+] );
+//that threw an exception if it didn't validate > moved the catch to index.php
 
-$form = new LoginForm();
+//still going?  no exception has been thrown
+//correct password?
+$signedIn = (new Authenticator())->attempt( 
+    $attributes['email'], $attributes['password'] 
+);
 
-//if the form did NOT pass validation
-if( $form->validate( $email, $password ) ){
-    //log in the user
-
-    //correct password?
-    if( (new Authenticator())->attempt( $email, $password ) ){
-        //successful login!  redirect to homepage
-        redirect("/"); 
-        exit();
-    }
-    else{ //wrong credentials 
-        //register this error with the form
-        $form->error( 'email' , 'No user found for this email & password.' );
-    }
+if( !$signedIn ){
+    //wrong credentials 
+    //register this error with the form
+    $form->error( 
+        'email' , 'No user found for this email & password.' 
+        )->throw();
+    //this will also throw an exception > handled on index, which reroutes you!
 }
 
-//trick:  use a _flashed key to indicate that it needs to get cleared on next page load
-//$_SESSION['_flashed']['errors'] = $form->errors();
-Session::flash( 'errors', $form->errors() );
+//successful login!  redirect to homepage
+redirect("/"); 
 
-//Failed login attempt?  Let's flash their bad credentials so we can keep them in the input boxes
-//don't pass password for security reason
-Session::flash( 'old', [
-    'email' => $email
-]);
-
-
-return redirect('/login'); //this sends us to the session/create controller
 
 /*
 //THis is not a good way to handle things.  We need to redirect!  Not just reload

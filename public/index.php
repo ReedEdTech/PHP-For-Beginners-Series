@@ -1,6 +1,7 @@
 <?php
 
 use Core\Session; 
+use Core\ValidationException;
 
 session_start(); //call this early to create the sessioN!
 
@@ -27,8 +28,22 @@ $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 //otherwise use the method (get/post) that you received from the server
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
+try{
+    $router->route($uri, $method);
+}
+catch( ValidationException $exception ){ //invalid formats on login credentials?  Handle it
+    //trick:  use a _flashed key to indicate that it needs to get cleared on next page load
+    //$_SESSION['_flashed']['errors'] = $form->errors();
+    Session::flash( 'errors', $exception->errors );
+    //Failed login attempt?  Let's flash their bad credentials so we can keep them in the input boxes
+    //don't pass password for security reason
+    Session::flash( 'old', $exception->old);
 
-$router->route($uri, $method);
+    //redirect to login page
+    //return redirect('/login'); //this sends us to the session/create controller
+    //make this smart enough to redirection to where you came from (not always login)
+    return redirect( $router->previousUrl() );
+}
 
 //NOW we can expired the '_flashed' session data
 Session::unflash();
