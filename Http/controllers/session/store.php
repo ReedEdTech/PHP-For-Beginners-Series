@@ -31,6 +31,13 @@ if( $form->validate( $email, $password ) ){
 //$_SESSION['_flashed']['errors'] = $form->errors();
 Session::flash( 'errors', $form->errors() );
 
+//Failed login attempt?  Let's flash their bad credentials so we can keep them in the input boxes
+//don't pass password for security reason
+Session::flash( 'old', [
+    'email' => $email
+]);
+
+
 return redirect('/login'); //this sends us to the session/create controller
 
 /*
