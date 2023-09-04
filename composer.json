@@ -1,0 +1,16 @@
+{
+    "name": "jreed/php-for-beginners-series",
+    "authors": [
+        {
+            "name": "JReed",
+            "email": "jason.reed@fayette.kyschools.us"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Core\\": "Core/",
+            "Http\\": "Http/"
+        }
+    }
+}
