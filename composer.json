@@ -6,11 +6,21 @@
             "email": "jason.reed@fayette.kyschools.us"
         }
     ],
-    "require": {},
+    "require": {
+        "illuminate/collections": "^10.21"
+    },
     "autoload": {
         "psr-4": {
             "Core\\": "Core/",
             "Http\\": "Http/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.17"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
         }
     }
 }
