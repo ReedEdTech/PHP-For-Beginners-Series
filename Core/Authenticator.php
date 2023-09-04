@@ -12,14 +12,15 @@ class Authenticator{
         $user = App::resolve(Database::class)->query('SELECT * FROM users WHERE email = :email', [
             'email'=>$email
         ] ) -> find();
-
+        
+        //dd($user);
 
         if( $user ){ //found user with this email
 
             //did they supply the correct password??
             if( password_verify( $password, $user['password'] ) ){ 
                 //store info in _SESSION
-                $this->login( ['email'=>$email ] );
+                $this->login( ['email'=>$email, 'id'=>$user['id'] ] );
         
                 return true;
             } 
@@ -30,7 +31,8 @@ class Authenticator{
 
     public function login( $user ){ //$user is an ARRAY 
         $_SESSION[ 'user' ] = [
-            'email' => $user['email']
+            'email' => $user['email'],
+            'id' => $user['id']
         ];
     
         //something about refreshing their cookie?

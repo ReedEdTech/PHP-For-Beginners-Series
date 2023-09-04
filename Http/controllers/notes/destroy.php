@@ -10,7 +10,7 @@ use Core\App;
 $db = App::resolve("Core\Database");
 //dd($db);
 
-$currentUserId = 1;
+$currentUserId = $_SESSION['user']['id'];
 
 //dd($_POST);//<<<<<<<<<<<<<<<< Did I get here?
 

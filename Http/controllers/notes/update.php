@@ -6,7 +6,7 @@ use Core\Validator;
 
 //grabe the database
 $db = App::resolve("Core\Database");
-$currentUserId = 1;
+$currentUserId = $_SESSION['user']['id'];
 
 //find the record using the ID we got from the form
 $note = $db->query('select * from notes where id = :id', [
